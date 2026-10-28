@@ -1,0 +1,53 @@
+---
+const points = [
+  {
+    title: "The photo stays here",
+    body: "A meal photo is read on the iPhone. GoodFat does not upload it, and it does not go to a cloud model.",
+  },
+  {
+    title: "Apple Intelligence names it",
+    body: "On-device Apple Intelligence reads the plate, a label, or your question, then looks the food up in the catalog on the phone.",
+  },
+  {
+    title: "Numbers come from the pack",
+    body: "Calories, fats, NOVA, and the inflammatory score come from the US food catalog stored on the device. If a fatty acid is missing, GoodFat leaves it blank.",
+  },
+] as const;
+---
+
+<section id="apple" class="relative border-t border-border/60 py-24 sm:py-28">
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_15%_20%,rgba(255,212,71,0.12),transparent_60%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="relative mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="label-micro text-yellow">Apple Intelligence</p>
+    <h2
+      class="mt-4 max-w-[18ch] font-display text-3xl font-800 tracking-[-0.03em] text-text text-balance sm:text-5xl"
+    >
+      Your plate stays on your iPhone.
+    </h2>
+    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
+      GoodFat 2.0 uses Apple Intelligence for meal photos and questions. The model runs on the phone.
+      A confirmed food can still sync with your account — the picture does not.
+    </p>
+
+    <ol class="mt-14 grid gap-6 sm:grid-cols-3">
+      {
+        points.map((item, index) => (
+          <li class="rounded-panel border border-border bg-card/50 p-6">
+            <p class="label-micro text-yellow">0{index + 1}</p>
+            <h3 class="mt-3 font-display text-2xl font-800 tracking-tight text-text">{item.title}</h3>
+            <p class="mt-3 text-[15px] leading-relaxed text-muted">{item.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="mt-10 max-w-2xl text-sm leading-relaxed text-muted">
+      Needs Apple Intelligence turned on. That means an iPhone 15 Pro, iPhone 15 Pro Max, iPhone 16 or
+      later, or iPhone Air, on iOS 26.
+    </p>
+  </div>
+</section>

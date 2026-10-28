@@ -1,0 +1,115 @@
+---
+import VitalitySphere from "./VitalitySphere.astro";
+---
+
+<div class="relative mx-auto w-[min(100%,320px)] sm:w-[340px]">
+  <div
+    class="relative overflow-hidden rounded-phone border border-border/80 bg-bg-deep shadow-[0_40px_80px_rgba(0,0,0,0.45)]"
+    style="aspect-ratio: 9 / 19.2"
+  >
+    <div class="pointer-events-none absolute inset-x-[22%] top-3 z-20 h-7 rounded-full bg-bg-deep"></div>
+    <div class="flex h-full flex-col bg-bg px-4 pb-5 pt-12">
+      <div class="mb-3 flex items-center justify-between">
+        <img
+          src="/images/logo-64.webp"
+          alt=""
+          width="28"
+          height="33"
+          class="h-7 w-auto"
+          decoding="async"
+        />
+        <span class="label-micro text-yellow">Home</span>
+      </div>
+
+      <div class="rounded-panel border border-border bg-card px-3.5 pb-3 pt-3.5">
+        <p class="label-micro text-muted">Inflammatory score</p>
+        <p class="mt-2 text-[13px] leading-[18px] text-muted">
+          Today is trending lower — keep leaning into omega‑3s, fiber, and colorful plants.
+        </p>
+        <div class="mt-1 flex justify-center">
+          <VitalitySphere score={28} label="Today" size={168} />
+        </div>
+        <div class="mt-1 flex h-8 items-end gap-1 px-1" aria-hidden="true">
+          {
+            [18, 34, 42, 31, 28, 22, 28].map((v, i) => (
+              <span
+                class="flex-1 rounded-t-sm"
+                style={`height:${Math.max(18, 100 - v)}%;background:${v < 30 ? "#3DDC97" : v < 60 ? "#FFC93C" : "#FF6B6B"};opacity:${0.35 + i * 0.08}`}
+              />
+            ))
+          }
+        </div>
+        <div class="mt-3 flex gap-2">
+          {
+            ["Today", "Weekly", "Monthly"].map((tab, i) => (
+              <span
+                class:list={[
+                  "flex-1 rounded-pill py-1.5 text-center text-[11px] font-700",
+                  i === 0 ? "bg-yellow text-ink" : "bg-navy text-muted",
+                ]}
+              >
+                {tab}
+              </span>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="mt-3 grid grid-cols-2 gap-2.5">
+        <div class="rounded-tile border border-border bg-card px-3 py-3">
+          <p class="label-micro text-muted">Omega-6 : 3</p>
+          <p class="mt-1.5 font-display text-2xl font-800 tracking-tight text-text">2.4</p>
+          <p class="mt-1 text-[11px] text-blue">Balanced lean</p>
+        </div>
+        <div class="rounded-tile border border-border bg-card px-3 py-3">
+          <p class="label-micro text-muted">Calories</p>
+          <p class="mt-1.5 font-display text-2xl font-800 tracking-tight text-text">1,420</p>
+          <p class="mt-1 text-[11px] text-muted">2000 baseline</p>
+        </div>
+      </div>
+
+      <div class="mt-3 rounded-tile border border-border bg-card px-3 py-3">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <p class="text-sm font-700 text-text">Atlantic salmon</p>
+            <p class="mt-0.5 text-[11px] text-muted">140g · HIGH OMEGA-3</p>
+          </div>
+          <span
+            class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-good/15 font-display text-sm font-800 text-good"
+          >
+            18
+          </span>
+        </div>
+      </div>
+
+      <div class="mt-auto flex items-end justify-around pt-4">
+        {
+          [
+            { label: "Home", active: true },
+            { label: "Ask", active: false },
+            { label: "Scan", active: false, center: true },
+            { label: "Log", active: false },
+            { label: "You", active: false },
+          ].map((item) =>
+            item.center ? (
+              <div class="relative -mt-5 flex h-14 w-14 items-center justify-center rounded-full border-2 border-yellow bg-card shadow-[0_10px_24px_rgba(255,212,71,0.28)]">
+                <img
+                  src="/images/splash-64.webp"
+                  alt=""
+                  width="34"
+                  height="39"
+                  class="h-8 w-auto"
+                  decoding="async"
+                />
+              </div>
+            ) : (
+              <span class:list={["text-[10px] font-700", item.active ? "text-yellow" : "text-muted"]}>
+                {item.label}
+              </span>
+            ),
+          )
+        }
+      </div>
+    </div>
+  </div>
+</div>

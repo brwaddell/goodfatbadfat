@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /keystatic
+Disallow: /keystatic/
+Disallow: /api/
+Disallow: /api/*
+
+Sitemap: https://goodfatbadfat.com/sitemap-index.xml

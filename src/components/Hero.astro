@@ -1,0 +1,385 @@
+---
+/**
+ * Sticky scroll hero: VitalitySphere owns the first viewport.
+ * Scroll eases inflammatory score high/red → low/green (app color math).
+ * Full-bleed wash tints the entire sticky viewport as the score moves.
+ */
+---
+
+<section
+  id="hero-scroll"
+  class="relative h-[280vh]"
+  data-hero-root
+  aria-label="Inflammatory score scroll story"
+>
+  <div class="sticky top-0 flex h-[100svh] flex-col overflow-hidden" data-hero-stage>
+    <!-- Full-viewport color wash — not a centered square -->
+    <div class="pointer-events-none absolute inset-0" data-hero-wash aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-0" data-hero-glow aria-hidden="true"></div>
+
+    <div
+      class="relative z-10 flex flex-1 flex-col items-center justify-center px-4 pb-8 pt-24 sm:px-6 sm:pt-28"
+    >
+      <p class="label-micro mb-4 text-yellow">Apple Intelligence on your iPhone</p>
+      <h1
+        class="mb-4 max-w-[18ch] text-center font-display text-[clamp(1.65rem,5vw,2.75rem)] font-800 leading-[1.12] tracking-[-0.03em] text-text text-balance sm:mb-5"
+      >
+        Scan your plate. Eat fats that help you feel better.
+      </h1>
+
+      <p class="label-micro mb-1 text-yellow sm:mb-2">Inflammatory score</p>
+
+      <div class="relative flex w-full max-w-[100vw] items-center justify-center">
+        <canvas
+          data-hero-canvas
+          class="h-[min(92vw,68svh)] w-[min(92vw,68svh)] max-h-[720px] max-w-[720px] sm:h-[min(74vw,72svh)] sm:w-[min(74vw,72svh)]"
+          aria-hidden="true"
+        ></canvas>
+        <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+          <span
+            class="font-display text-[clamp(3.5rem,13vw,6.5rem)] font-800 leading-none tracking-[-0.04em] text-white"
+            data-hero-score
+          >
+            82
+          </span>
+          <span class="label-micro mt-2 text-white/75 sm:mt-3" data-hero-label>Elevated</span>
+        </div>
+      </div>
+
+      <div class="mt-4 max-w-lg px-2 text-center sm:mt-6">
+        <p
+          class="font-display text-lg font-700 tracking-[-0.02em] text-text text-balance sm:text-2xl"
+          data-hero-line
+        >
+          Heavy oils can leave you tired and sore.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const GREEN = { r: 0x22, g: 0xa3, b: 0x5f };
+  const AMBER = { r: 0xf2, g: 0xb0, b: 0x10 };
+  const RED = { r: 0xe6, g: 0x19, b: 0x19 };
+  const SCORE_START = 82;
+  const SCORE_END = 18;
+
+  const LINES = [
+    { at: 0, line: "Heavy oils can leave you tired and sore.", label: "Elevated" },
+    { at: 0.34, line: "Better fats help your body settle.", label: "Mixed" },
+    { at: 0.7, line: "Calm body. Clearer mind. Better days.", label: "Low" },
+  ];
+
+  function clamp(v, min, max) {
+    return Math.min(max, Math.max(min, v));
+  }
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
+  }
+  function lerpRgb(a, b, t) {
+    const u = clamp(t, 0, 1);
+    return {
+      r: Math.round(lerp(a.r, b.r, u)),
+      g: Math.round(lerp(a.g, b.g, u)),
+      b: Math.round(lerp(a.b, b.b, u)),
+    };
+  }
+  function scoreToRgb(score) {
+    const s = clamp(score, 0, 100);
+    if (s <= 40) return GREEN;
+    if (s >= 80) return RED;
+    if (s <= 60) return lerpRgb(GREEN, AMBER, (s - 40) / 20);
+    return lerpRgb(AMBER, RED, (s - 60) / 20);
+  }
+  function easeInOut(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+  function mulberry32(seed) {
+    let a = seed >>> 0;
+    return () => {
+      a += 0x6d2b79f5;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function makeParticles(seed) {
+    const rand = mulberry32(seed);
+    return Array.from({ length: 14 }, () => {
+      const x = rand();
+      return {
+        baseAngle: rand() * Math.PI * 2,
+        baseRadius: (1 - (1 - x) * (1 - x)) * 0.95,
+        angularSpeed: (rand() * 2 - 1) * 0.25,
+        driftSpeed: 0.65 + rand() * 0.9,
+        sizeFactor: rand(),
+        phase: rand() * Math.PI * 2,
+      };
+    });
+  }
+  function buildBlobPath(ctx, cx, cy, radius, t, wobble) {
+    const points = 72;
+    const p1 = t * 0.85 + wobble * 3.2;
+    const p2 = t * 1.15 - wobble * 2.4;
+    const p3 = t * 0.6 + 1.7;
+    ctx.beginPath();
+    for (let i = 0; i <= points; i += 1) {
+      const a = (i / points) * Math.PI * 2;
+      const n =
+        1 +
+        0.075 * Math.sin(a * 3 + p1) +
+        0.052 * Math.sin(a * 5 - p2) +
+        0.035 * Math.sin(a * 8 + p3) +
+        0.02 * Math.sin(a * 13 + p2 * 0.6);
+      const r = radius * n;
+      const x = cx + Math.cos(a) * r;
+      const y = cy + Math.sin(a) * r;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  }
+
+  const root = document.querySelector("[data-hero-root]");
+  const canvas = document.querySelector("[data-hero-canvas]");
+  const scoreEl = document.querySelector("[data-hero-score]");
+  const labelEl = document.querySelector("[data-hero-label]");
+  const lineEl = document.querySelector("[data-hero-line]");
+  const washEl = document.querySelector("[data-hero-wash]");
+  const glowEl = document.querySelector("[data-hero-glow]");
+  const stageEl = document.querySelector("[data-hero-stage]");
+
+  if (root instanceof HTMLElement && canvas instanceof HTMLCanvasElement) {
+    const ctx = canvas.getContext("2d");
+    const particles = makeParticles(24017);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    let lastTs = performance.now();
+    let displayScore = SCORE_START;
+    let lineIndex = -1;
+
+    function measureProgress() {
+      const rect = root.getBoundingClientRect();
+      const total = root.offsetHeight - window.innerHeight;
+      if (total <= 0) return 0;
+      return clamp(-rect.top / total, 0, 1);
+    }
+
+    function pickLine(p) {
+      let idx = 0;
+      for (let i = 0; i < LINES.length; i += 1) {
+        if (p >= LINES[i].at) idx = i;
+      }
+      return idx;
+    }
+
+    function syncCopy(p, score) {
+      const idx = pickLine(p);
+      if (idx !== lineIndex) {
+        lineIndex = idx;
+        const item = LINES[idx];
+        if (lineEl) lineEl.textContent = item.line;
+      }
+      if (labelEl) labelEl.textContent = LINES[lineIndex].label;
+      if (scoreEl) scoreEl.textContent = String(Math.round(score));
+
+      const accent = scoreToRgb(score);
+      const isLight = document.documentElement.dataset.theme === "light";
+      const washA = isLight ? 0.34 : 0.42;
+      const washB = isLight ? 0.14 : 0.2;
+      const glowA = isLight ? 0.38 : 0.48;
+
+      if (washEl instanceof HTMLElement) {
+        washEl.style.background = `
+          radial-gradient(ellipse 140% 90% at 50% 42%, rgba(${accent.r},${accent.g},${accent.b},${washA}), transparent 68%),
+          radial-gradient(ellipse 100% 70% at 50% 100%, rgba(${accent.r},${accent.g},${accent.b},${washB}), transparent 72%),
+          linear-gradient(180deg, rgba(${accent.r},${accent.g},${accent.b},${washB * 0.55}) 0%, transparent 42%, rgba(${accent.r},${accent.g},${accent.b},${washB * 0.4}) 100%)
+        `;
+      }
+      if (glowEl instanceof HTMLElement) {
+        glowEl.style.background = `radial-gradient(circle at 50% 48%, rgba(${accent.r},${accent.g},${accent.b},${glowA}), transparent 58%)`;
+      }
+      if (stageEl instanceof HTMLElement) {
+        stageEl.style.setProperty(
+          "--hero-tint",
+          `rgba(${accent.r},${accent.g},${accent.b},${isLight ? 0.08 : 0.12})`,
+        );
+      }
+      if (scoreEl instanceof HTMLElement) {
+        scoreEl.style.textShadow = `0 12px 48px rgba(${accent.r},${accent.g},${accent.b},0.55)`;
+      }
+    }
+
+    function draw(score, time) {
+      if (!ctx) return;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const css = canvas.clientWidth || 420;
+      const size = Math.max(1, Math.floor(css * dpr));
+      if (canvas.width !== size || canvas.height !== size) {
+        canvas.width = size;
+        canvas.height = size;
+      }
+
+      ctx.clearRect(0, 0, size, size);
+      const cx = size / 2;
+      const cy = size / 2;
+      const radius = size * 0.46;
+      const accent = scoreToRgb(score);
+      const highlight = lerpRgb({ r: 255, g: 255, b: 255 }, accent, 0.25);
+      const breath = 1 + 0.018 * Math.sin(time * 2);
+      const wobble = 0.06 * Math.sin(time * 1.35) + 0.04 * Math.sin(time * 0.82 + 1.3);
+      const pulse = 1 + 0.03 * Math.sin(time * 2.15 + 0.4);
+      const blobRadius = radius * 0.78 * pulse;
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(breath, breath);
+      ctx.translate(-cx, -cy);
+
+      // Soft edge glow only — full-bleed wash lives on the stage layers
+      const glow = ctx.createRadialGradient(cx, cy, radius * 0.35, cx, cy, radius * 1.05);
+      glow.addColorStop(0, `rgba(${accent.r},${accent.g},${accent.b},0.22)`);
+      glow.addColorStop(1, `rgba(${accent.r},${accent.g},${accent.b},0)`);
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius * 1.05, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.clip();
+
+      ctx.fillStyle = `rgba(${accent.r},${accent.g},${accent.b},0.22)`;
+      buildBlobPath(ctx, cx, cy + radius * 0.02, blobRadius * 1.03, time + 0.25, wobble * 0.8);
+      ctx.fill();
+
+      const blobGrad = ctx.createRadialGradient(
+        cx - radius * 0.12,
+        cy - radius * 0.14,
+        radius * 0.05,
+        cx,
+        cy,
+        blobRadius * 1.15,
+      );
+      blobGrad.addColorStop(0, `rgba(${highlight.r},${highlight.g},${highlight.b},0.92)`);
+      blobGrad.addColorStop(0.55, `rgba(${accent.r},${accent.g},${accent.b},0.95)`);
+      blobGrad.addColorStop(1, `rgba(${accent.r},${accent.g},${accent.b},0.55)`);
+      ctx.fillStyle = blobGrad;
+      buildBlobPath(ctx, cx, cy, blobRadius, time, wobble);
+      ctx.fill();
+
+      const sheen = ctx.createLinearGradient(
+        cx - radius * 0.5,
+        cy - radius * 0.5,
+        cx + radius * 0.5,
+        cy + radius * 0.5,
+      );
+      sheen.addColorStop(0, "rgba(255,255,255,0.12)");
+      sheen.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = sheen;
+      buildBlobPath(ctx, cx, cy, blobRadius, time, wobble);
+      ctx.fill();
+
+      for (const p of particles) {
+        const angle = p.baseAngle + time * p.angularSpeed;
+        const r = radius * 0.8 * p.baseRadius;
+        const drift = Math.sin(time * p.driftSpeed + p.phase) * (radius * 0.06);
+        const x = cx + Math.cos(angle) * r;
+        const y = cy + Math.sin(angle) * r + drift;
+        const breathP = 0.55 + 0.45 * Math.sin(time * 1.7 + p.phase);
+        const opacity = clamp(0.1 + 0.24 * breathP, 0, 0.38);
+        const pr = clamp(radius * (0.01 + p.sizeFactor * 0.018), 1.4 * dpr, 5.4 * dpr);
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${accent.r},${accent.g},${accent.b},${opacity})`;
+        ctx.arc(x, y, pr, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255,255,255,${clamp(opacity * 0.55, 0, 0.22)})`;
+        ctx.arc(x, y, pr * 0.45, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      const glass = ctx.createRadialGradient(
+        cx - radius * 0.15,
+        cy - radius * 0.22,
+        0,
+        cx,
+        cy,
+        radius,
+      );
+      glass.addColorStop(0, "rgba(255,255,255,0.12)");
+      glass.addColorStop(0.55, "rgba(255,255,255,0.05)");
+      glass.addColorStop(1, "rgba(255,255,255,0.02)");
+      ctx.fillStyle = glass;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = "rgba(255,255,255,0.18)";
+      ctx.lineWidth = radius * 0.018;
+      ctx.beginPath();
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      const spec = ctx.createRadialGradient(
+        cx - radius * 0.2,
+        cy - radius * 0.25,
+        0,
+        cx - radius * 0.2,
+        cy - radius * 0.25,
+        radius * 0.35,
+      );
+      spec.addColorStop(0, "rgba(255,255,255,0.28)");
+      spec.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = spec;
+      ctx.beginPath();
+      ctx.ellipse(
+        cx - radius * 0.2,
+        cy - radius * 0.25,
+        radius * 0.325,
+        radius * 0.21,
+        0,
+        0,
+        Math.PI * 2,
+      );
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function frame(now) {
+      const dt = Math.min(0.05, (now - lastTs) / 1000);
+      lastTs = now;
+      const time = now / 1000;
+
+      const progress = measureProgress();
+      const eased = reduced ? progress : easeInOut(progress);
+      const target = lerp(SCORE_START, SCORE_END, eased);
+      const alpha = reduced ? 1 : 1 - Math.exp(-10 * dt);
+      displayScore = lerp(displayScore, target, alpha);
+
+      syncCopy(progress, displayScore);
+      draw(displayScore, time);
+      requestAnimationFrame(frame);
+    }
+
+    const themeObserver = new MutationObserver(() => syncCopy(measureProgress(), displayScore));
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+
+    syncCopy(0, SCORE_START);
+    requestAnimationFrame(frame);
+  }
+</script>
+
+<style>
+  [data-hero-stage] {
+    background-color: color-mix(in srgb, var(--hero-tint, transparent) 100%, transparent);
+  }
+</style>

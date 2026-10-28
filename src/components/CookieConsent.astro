@@ -1,0 +1,86 @@
+---
+---
+
+<div
+  id="cookie-banner"
+  class="fixed inset-x-0 bottom-0 z-[80] px-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6"
+  hidden
+  role="dialog"
+  aria-labelledby="cookie-banner-title"
+  aria-describedby="cookie-banner-copy"
+>
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-4 rounded-panel border border-border bg-card/95 p-4 shadow-[0_18px_48px_rgba(0,0,0,0.28)] backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:p-5"
+  >
+    <div class="max-w-2xl">
+      <p id="cookie-banner-title" class="font-display text-base font-800 text-text">Cookies and privacy</p>
+      <p id="cookie-banner-copy" class="mt-1 text-sm leading-relaxed text-muted">
+        We store your theme locally. Optional analytics load only if you accept.
+        <a href="/privacy#cookies" class="font-700 text-yellow underline-offset-2 hover:underline">
+          Privacy policy
+        </a>
+      </p>
+    </div>
+    <div class="flex flex-col gap-2 sm:flex-row sm:shrink-0">
+      <button
+        type="button"
+        data-cookie-choice="necessary"
+        class="inline-flex items-center justify-center rounded-pill border border-border bg-bg-deep px-4 py-2.5 font-display text-sm font-700 text-text transition-colors hover:border-yellow/50"
+      >
+        Necessary only
+      </button>
+      <button
+        type="button"
+        data-cookie-choice="accepted"
+        class="inline-flex items-center justify-center rounded-pill bg-yellow px-4 py-2.5 font-display text-sm font-700 text-ink transition-transform hover:-translate-y-0.5"
+      >
+        Accept analytics
+      </button>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const KEY = "goodfat-cookie-consent";
+    const banner = document.getElementById("cookie-banner");
+
+    function readConsent() {
+      try {
+        const raw = localStorage.getItem(KEY);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (parsed === "accepted" || parsed === "necessary") return { analytics: parsed === "accepted" };
+        if (parsed && typeof parsed === "object") return { analytics: Boolean(parsed.analytics) };
+      } catch {
+        return null;
+      }
+      return null;
+    }
+
+    function persist(analytics) {
+      try {
+        localStorage.setItem(
+          KEY,
+          JSON.stringify({ analytics, ts: Date.now() }),
+        );
+      } catch {
+        // ignore storage failures
+      }
+      window.dispatchEvent(new CustomEvent("goodfat-consent", { detail: { analytics } }));
+    }
+
+    const existing = readConsent();
+    if (!existing && banner) banner.hidden = false;
+
+    banner?.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest("[data-cookie-choice]");
+      if (!button) return;
+      const choice = button.getAttribute("data-cookie-choice");
+      persist(choice === "accepted");
+      banner.hidden = true;
+    });
+  })();
+</script>

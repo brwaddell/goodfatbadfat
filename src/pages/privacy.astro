@@ -1,0 +1,281 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+const updated = "October 28, 2026";
+---
+
+<BaseLayout
+  title="Privacy Policy — GoodFat"
+  description="How GoodFat handles food photos, your log, and your privacy."
+>
+  <SiteHeader />
+  <main id="main-content" class="mx-auto max-w-2xl px-5 pb-24 pt-28 sm:px-8">
+    <p class="label-micro text-yellow">Legal</p>
+    <h1 class="mt-3 font-display text-4xl font-800 tracking-tight text-text">Privacy policy</h1>
+    <p class="mt-3 text-sm text-muted">Last updated: {updated}</p>
+    <p class="mt-6 text-[15px] leading-relaxed text-muted">
+      This policy explains what GoodFat does with your information. We wrote it in plain language so
+      you can understand it.
+    </p>
+
+    <div class="mt-10 space-y-10 text-[15px] leading-relaxed text-muted">
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">1. The short version</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>
+            <strong class="text-text">Meal photos stay on your iPhone.</strong> Apple Intelligence and
+            Apple’s Vision framework read the photo on the device. GoodFat does not upload it and does
+            not keep a photo library of your meals.
+          </li>
+          <li>
+            <strong class="text-text">We do not sell your data.</strong> We do not share your food log
+            or profile with advertisers or data brokers.
+          </li>
+          <li>
+            We use a few service partners only to run the account, the synced food log, and paywalls.
+            Meal photos and questions are handled on the iPhone. Details are below.
+          </li>
+          <li>You can delete your account anytime in Settings.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">2. Who we are</h2>
+        <p class="mt-3">
+          GoodFat (“we,” “us”) is the GoodFat mobile app and website at{" "}
+          <a class="text-yellow underline-offset-2 hover:underline" href="https://goodfatbadfat.com"
+            >goodfatbadfat.com</a
+          >. Questions:{" "}
+          <a class="text-yellow underline-offset-2 hover:underline" href="mailto:help@goodfatbadfat.com"
+            >help@goodfatbadfat.com</a
+          >.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">3. Food photos (important)</h2>
+        <p class="mt-3">
+          When you take or pick a meal photo, GoodFat reads it on the iPhone. Apple’s Vision framework
+          looks for a barcode or label text. Apple Intelligence names the food. Both run on the device.
+        </p>
+        <p class="mt-3">
+          <strong class="text-text">We do not upload your food photos.</strong> We do not store them in
+          your food log, and we do not keep a photo album on our servers. The photo is not sent to
+          GoodFat or to a cloud model such as Google Gemini.
+        </p>
+        <p class="mt-3">
+          Questions you type in Ask are handled the same way: Apple Intelligence on the iPhone, then a
+          lookup in the nutrition catalog stored on the phone. If the catalog is missing a fatty acid,
+          GoodFat does not fill it in from a cloud model.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">4. What we collect</h2>
+        <div class="mt-3 space-y-4">
+          <div>
+            <h3 class="font-display text-base font-800 text-text">Account</h3>
+            <p class="mt-1">
+              GoodFat can run with an anonymous account so you do not need an email to start. If you
+              add a name or email in your profile, we store those fields with your account id.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-display text-base font-800 text-text">Food log</h3>
+            <p class="mt-1">
+              Foods you confirm (name, amount, nutrition fields, inflammatory score, and related
+              details such as barcode or source). This is how your Today / Weekly / Monthly views
+              work.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-display text-base font-800 text-text">Chat</h3>
+            <p class="mt-1">
+              Questions and replies in Ask stay on the iPhone. GoodFat does not send that conversation
+              to a cloud model, and we do not keep a server log of those messages.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-display text-base font-800 text-text">On-device nutrition pack</h3>
+            <p class="mt-1">
+              A large US food catalog (sourced from public data such as USDA and Open Food Facts)
+              lives on your phone. Lookups can happen without sending the whole catalog to us.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-display text-base font-800 text-text">Subscriptions</h3>
+            <p class="mt-1">
+              If you subscribe, purchase status may be synced so Premium features unlock. See section
+              6.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">5. How we use information</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>To identify foods and show nutrition and score estimates</li>
+          <li>To keep your food log and trends</li>
+          <li>To answer questions on your iPhone with Apple Intelligence</li>
+          <li>To unlock paid features you buy</li>
+          <li>To secure the service and fix bugs</li>
+          <li>To respond if you contact support</li>
+        </ul>
+        <p class="mt-3">
+          We do <strong class="text-text">not</strong> use your food log to sell ads. We do{" "}
+          <strong class="text-text">not</strong> sell personal information.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">6. Sharing — and what we do not share</h2>
+        <p class="mt-3">
+          <strong class="text-text"
+            >We do not sell or rent your personal information to third parties.</strong
+          >
+          We do not share your user profile or food log with other companies for their own marketing.
+        </p>
+        <p class="mt-3">
+          To run GoodFat we use a small set of processors that only get what they need to do their
+          job:
+        </p>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>
+            <strong class="text-text">Supabase</strong> — account auth, database, and secure edge
+            functions
+          </li>
+          <li>
+            <strong class="text-text">Apple</strong> — Apple Intelligence and Vision run on your iPhone
+            for meal photos and Ask. App Store billing applies when you buy Premium. Apple’s own terms
+            cover on-device system features.
+          </li>
+          <li>
+            <strong class="text-text">RevenueCat</strong> — subscription status sync for Premium access
+          </li>
+        </ul>
+        <p class="mt-3">
+          We may also share information if the law requires it, or to protect people from serious harm
+          or fraud.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">7. Where data lives</h2>
+        <p class="mt-3">
+          Meal photos and Ask stay on the iPhone. The nutrition pack is stored on the device. A copy of
+          the food log also stays on the phone. If you have an account session, confirmed log entries
+          (name, amount, nutrition fields, and score — not the photo) may sync to our cloud provider
+          (Supabase).
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">8. Keeping data</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>
+            <strong class="text-text">Photos:</strong> processed on the iPhone and not uploaded to
+            GoodFat.
+          </li>
+          <li>
+            <strong class="text-text">Food log and account:</strong> kept on the phone, and in the
+            cloud while your account exists.
+          </li>
+          <li>
+            <strong class="text-text">Ask:</strong> stays on the iPhone. We do not keep a server copy of
+            those messages.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">9. Your choices</h2>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>You can use Ask without attaching a photo. Ask still runs on the iPhone.</li>
+          <li>You can edit or remove foods from your log in the app.</li>
+          <li>
+            <strong class="text-text">Delete account</strong> in Settings removes your auth user and
+            related cloud rows we control. Local copies on that phone are cleared when you delete the
+            app.
+          </li>
+        </ul>
+        <p class="mt-3">
+          For privacy requests, email{" "}
+          <a class="text-yellow underline-offset-2 hover:underline" href="mailto:help@goodfatbadfat.com"
+            >help@goodfatbadfat.com</a
+          >.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">10. Children</h2>
+        <p class="mt-3">
+          GoodFat is not directed at children under 13 (or the minimum age in your country). Do not
+          use the app if you are under that age.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">11. Security</h2>
+        <p class="mt-3">
+          We use standard industry protections (including encrypted connections). No method of
+          storage or transfer is 100% safe, so please use a device you trust.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">12. Changes</h2>
+        <p class="mt-3">
+          If we update this policy, we will change the “Last updated” date on this page. Big changes
+          may also be noted in the app.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">13. Contact</h2>
+        <p class="mt-3">
+          Email{" "}
+          <a class="text-yellow underline-offset-2 hover:underline" href="mailto:help@goodfatbadfat.com"
+            >help@goodfatbadfat.com</a
+          >. See also our{" "}
+          <a class="text-yellow underline-offset-2 hover:underline" href="/terms">Terms of use</a>.
+        </p>
+      </section>
+
+      <section id="cookies">
+        <h2 class="font-display text-xl font-800 text-text">14. Website cookies and local storage</h2>
+        <p class="mt-3">
+          The GoodFat website uses a small set of on-device preferences. These are not used to advertise
+          to you.
+        </p>
+        <ul class="mt-3 list-disc space-y-2 pl-5">
+          <li>
+            <strong class="text-text">Necessary:</strong> your light/dark theme choice and your cookie
+            consent decision, stored in local storage on this device.
+          </li>
+          <li>
+            <strong class="text-text">Analytics (optional):</strong> if you tap “Accept analytics,” we
+            may load privacy-minded measurement (Plausible and/or Google Analytics) to understand which
+            pages are useful. This does not run until you accept.
+          </li>
+        </ul>
+        <p class="mt-3">
+          You can change your mind by clearing this site’s stored data in your browser. The banner
+          will appear again if no consent choice is saved.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="font-display text-xl font-800 text-text">15. Website contact form</h2>
+        <p class="mt-3">
+          The support form checks the fields in your browser, then opens your email app with a draft to
+          help@goodfatbadfat.com. The public website does not store that form. We receive the message
+          only if you send the email. We do not use it to market to you.
+        </p>
+      </section>
+    </div>
+  </main>
+  <SiteFooter />
+</BaseLayout>

@@ -1,0 +1,90 @@
+---
+import VitalitySphere from "./VitalitySphere.astro";
+---
+
+<section id="score" class="relative overflow-hidden border-t border-border/60 py-24 sm:py-28">
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_90%_70%_at_80%_50%,rgba(61,220,151,0.18),transparent_68%)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-5 sm:px-8 lg:grid-cols-2 lg:gap-10">
+    <div>
+      <p class="label-micro text-yellow">Your score</p>
+      <h2
+        class="mt-4 max-w-[16ch] font-display text-3xl font-800 tracking-[-0.03em] text-text text-balance sm:text-5xl"
+      >
+        One number that shows how your food is treating you.
+      </h2>
+      <p class="mt-5 max-w-lg text-lg leading-relaxed text-muted">
+        Lower is better. Green means your fats are kinder to your body. Amber means mixed. Red means
+        it is time for a gentler swap — so you can sleep better, move easier, and feel more like
+        yourself.
+      </p>
+
+      <dl class="mt-10 space-y-6">
+        {
+          [
+            {
+              term: "Omega balance",
+              def: "See if your meals lean toward calming fats (like fish and walnuts) or heavier seed oils.",
+            },
+            {
+              term: "How processed it is",
+              def: "Ultra-processed foods often leave you more inflamed. GoodFat flags that when it can.",
+            },
+            {
+              term: "Trends that stick",
+              def: "Check Today, Weekly, and Monthly — so one treat does not wipe out your progress.",
+            },
+          ].map((row) => (
+            <div class="border-l-2 border-yellow/70 pl-4">
+              <dt class="font-display text-lg font-800 text-text">{row.term}</dt>
+              <dd class="mt-1.5 text-[15px] leading-relaxed text-muted">{row.def}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="relative flex justify-center lg:justify-end">
+      <div class="w-full max-w-lg">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="label-micro text-muted">Inflammatory score</p>
+            <p class="mt-2 max-w-sm text-sm leading-relaxed text-muted">
+              Your weekly score is trending lower — keep choosing fats that help you feel good.
+            </p>
+          </div>
+          <img
+            src="/images/chat-avatar.webp"
+            alt="GoodFat droplet mascot"
+            width="40"
+            height="34"
+            class="h-8 w-auto"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        <div class="mt-4 flex justify-center">
+          <VitalitySphere score={28} label="Weekly" size={360} />
+        </div>
+        <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+          {
+            [
+              { label: "Low", range: "0–29", color: "text-good" },
+              { label: "Mixed", range: "30–59", color: "text-ok" },
+              { label: "Elevated", range: "60–100", color: "text-industrial" },
+            ].map((band) => (
+              <div>
+                <p class:list={["font-display text-sm font-800", band.color]}>{band.label}</p>
+                <p class="mt-1 label-micro text-muted">{band.range}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,311 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { appStoreUrl } from "../lib/site";
+
+const faqs = [
+  {
+    q: "What is GoodFat?",
+    a: "GoodFat is an iPhone app that helps you pay attention to fat quality and inflammatory load in your meals. It uses Apple Intelligence on the phone. Instead of obsessing over raw calorie counts, GoodFat helps you spot calming omega-3s, monitor ultra-processed ingredients, and choose meals that support how you feel, sleep, and think.",
+  },
+  {
+    q: "Which iPhones can run it?",
+    a: "GoodFat 2.0 needs Apple Intelligence turned on. That is an iPhone 15 Pro, iPhone 15 Pro Max, iPhone 16 or later, or iPhone Air, on iOS 26. If Apple Intelligence is off, the app asks you to turn it on in Settings.",
+  },
+  {
+    q: "How does the inflammatory score work?",
+    a: "The score (0–100) reflects the inflammatory load of your logged meals based on fat balance (omega-6 to omega-3 ratio), processing level (such as industrial seed oils and NOVA indicators), and whole-food ingredients. Lower is better: green indicates calm fats, amber means mixed, and red suggests swapping for gentler options.",
+  },
+  {
+    q: "Is GoodFat medical advice?",
+    a: "No. GoodFat and its inflammatory score are educational and awareness tools inspired by peer-reviewed nutrition science. They are not medical devices, clinical diagnostic tools, or healthcare advice. Consult a qualified healthcare professional for medical questions.",
+  },
+  {
+    q: "Are my food photos stored on your servers?",
+    a: "No. A meal photo is read on your iPhone with Apple Intelligence and Vision. GoodFat does not upload the photo and does not keep a photo library of your meals.",
+  },
+  {
+    q: "Does Ask send my question to the cloud?",
+    a: "No. Ask uses Apple Intelligence on the iPhone, then looks the food up in the catalog stored on the device. A food you confirm can still sync with your account. The photo and the chat do not.",
+  },
+  {
+    q: "How do I log meals?",
+    a: "Snap a photo, scan a barcode, or describe the meal in Ask. Apple Intelligence names the food on the iPhone. You confirm the amount before it is logged.",
+  },
+  {
+    q: "How do I cancel or manage my subscription?",
+    a: "Subscriptions are managed through the Apple App Store. You can manage or cancel anytime in Settings → Subscriptions on the iPhone, or in GoodFat under Settings → Manage subscription.",
+  },
+  {
+    q: "How can I restore my purchase?",
+    a: "Open the GoodFat app, go to Settings, and tap 'Restore purchases'. If you are on the paywall screen, you can also tap 'Restore' in the top right corner.",
+  },
+  {
+    q: "How do I delete my account and data?",
+    a: "You can permanently delete your account and all associated food logs anytime directly inside the app by heading to Settings > Delete account.",
+  },
+];
+---
+
+<BaseLayout
+  title="Support & FAQ — GoodFat"
+  description="Frequently asked questions and contact support for the GoodFat app."
+>
+  <SiteHeader />
+  <main id="main-content" class="mx-auto max-w-3xl px-5 pb-24 pt-28 sm:px-8">
+    <div class="text-center sm:text-left">
+      <p class="label-micro text-yellow">Help Center</p>
+      <h1 class="mt-3 font-display text-4xl font-800 tracking-tight text-text sm:text-5xl">
+        Support & FAQ
+      </h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+        Have questions about GoodFat, your subscription, or logging your meals? Check our answers below or send our team a note.
+      </p>
+      <a
+        href={appStoreUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-6 inline-flex items-center justify-center rounded-pill bg-yellow px-5 py-2.5 font-display text-sm font-700 text-ink transition-transform hover:-translate-y-0.5"
+      >
+        Download on the App Store
+      </a>
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="mt-14" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" class="font-display text-2xl font-800 tracking-tight text-text sm:text-3xl">
+        Frequently asked questions
+      </h2>
+
+      <div class="mt-8 space-y-4">
+        {
+          faqs.map((faq, idx) => (
+            <details
+              class="group rounded-panel border border-border bg-card/60 p-5 transition-colors open:bg-card hover:border-yellow/40 sm:p-6"
+              open={idx === 0}
+            >
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-800 text-text">
+                <span>{faq.q}</span>
+                <span
+                  class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border text-muted transition-transform duration-200 group-open:rotate-180 group-open:text-yellow"
+                  aria-hidden="true"
+                >
+                  <svg
+                    class="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </span>
+              </summary>
+              <div class="mt-4 border-t border-border/50 pt-4 text-[15px] leading-relaxed text-muted">
+                <p>{faq.a}</p>
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section
+      id="contact"
+      class="mt-16 rounded-panel border border-border bg-card/70 p-6 sm:p-8"
+      aria-labelledby="contact-heading"
+    >
+      <div class="max-w-xl">
+        <p class="label-micro text-yellow">Get in touch</p>
+        <h2 id="contact-heading" class="mt-2 font-display text-2xl font-800 tracking-tight text-text sm:text-3xl">
+          Send us a message
+        </h2>
+        <p class="mt-2 text-[15px] leading-relaxed text-muted">
+          Need help with something else? Send a message to{" "}
+          <a
+            class="font-semibold text-yellow underline-offset-2 hover:underline"
+            href="mailto:help@goodfatbadfat.com"
+          >
+            help@goodfatbadfat.com
+          </a>
+          .
+        </p>
+      </div>
+
+      <form id="support-form" class="relative mt-8 space-y-5" novalidate>
+        <input type="hidden" name="startedAt" id="startedAt" value="" />
+        <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+          <label for="website">Company</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div>
+          <label for="name" class="block font-display text-sm font-700 text-text">
+            Your name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            required
+            minlength="2"
+            maxlength="80"
+            autocomplete="name"
+            placeholder="Jane Doe"
+            class="mt-2 w-full rounded-tile border border-border bg-bg-deep/80 px-4 py-3 text-[15px] text-text placeholder-muted/60 transition-colors focus:border-yellow focus:outline-none focus:ring-1 focus:ring-yellow"
+          />
+          <p class="field-error mt-2 hidden text-sm text-industrial" data-error-for="name"></p>
+        </div>
+
+        <div>
+          <label for="email" class="block font-display text-sm font-700 text-text">
+            Your email
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            maxlength="200"
+            autocomplete="email"
+            placeholder="you@example.com"
+            class="mt-2 w-full rounded-tile border border-border bg-bg-deep/80 px-4 py-3 text-[15px] text-text placeholder-muted/60 transition-colors focus:border-yellow focus:outline-none focus:ring-1 focus:ring-yellow"
+          />
+          <p class="field-error mt-2 hidden text-sm text-industrial" data-error-for="email"></p>
+        </div>
+
+        <div>
+          <label for="subject" class="block font-display text-sm font-700 text-text">
+            Subject
+          </label>
+          <input
+            type="text"
+            id="subject"
+            name="subject"
+            required
+            minlength="3"
+            maxlength="120"
+            placeholder="Question about GoodFat"
+            class="mt-2 w-full rounded-tile border border-border bg-bg-deep/80 px-4 py-3 text-[15px] text-text placeholder-muted/60 transition-colors focus:border-yellow focus:outline-none focus:ring-1 focus:ring-yellow"
+          />
+          <p class="field-error mt-2 hidden text-sm text-industrial" data-error-for="subject"></p>
+        </div>
+
+        <div>
+          <label for="message" class="block font-display text-sm font-700 text-text">
+            Message
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            rows="5"
+            required
+            minlength="10"
+            maxlength="4000"
+            placeholder="How can we help you today?"
+            class="mt-2 w-full rounded-tile border border-border bg-bg-deep/80 px-4 py-3 text-[15px] text-text placeholder-muted/60 transition-colors focus:border-yellow focus:outline-none focus:ring-1 focus:ring-yellow"
+          ></textarea>
+          <p class="field-error mt-2 hidden text-sm text-industrial" data-error-for="message"></p>
+        </div>
+
+        <p id="form-status" class="text-sm text-muted" aria-live="polite"></p>
+
+        <div>
+          <button
+            type="submit"
+            id="support-submit"
+            class="inline-flex items-center justify-center rounded-pill bg-yellow px-7 py-3.5 font-display text-sm font-700 text-ink transition-transform duration-200 hover:-translate-y-0.5"
+          >
+            Send message
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <script>
+      const form = document.getElementById("support-form");
+      const startedAt = document.getElementById("startedAt");
+      const statusEl = document.getElementById("form-status");
+      const submitBtn = document.getElementById("support-submit");
+      const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (startedAt instanceof HTMLInputElement) {
+        startedAt.value = String(Date.now());
+      }
+
+      function setError(field: string, message: string) {
+        const el = form?.querySelector(`[data-error-for="${field}"]`);
+        if (!(el instanceof HTMLElement)) return;
+        el.textContent = message;
+        el.classList.toggle("hidden", !message);
+      }
+
+      function clearErrors() {
+        ["name", "email", "subject", "message"].forEach((field) => setError(field, ""));
+      }
+
+      function validate(data: Record<string, string>) {
+        const errors: Record<string, string> = {};
+        if (data.name.trim().length < 2) errors.name = "Please enter your name.";
+        if (!EMAIL_PATTERN.test(data.email.trim())) errors.email = "Please enter a valid email address.";
+        if (data.subject.trim().length < 3) errors.subject = "Please add a short subject.";
+        if (data.message.trim().length < 10) errors.message = "Please tell us a bit more so we can help.";
+        return errors;
+      }
+
+      form?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!(form instanceof HTMLFormElement)) return;
+        clearErrors();
+        if (statusEl) {
+          statusEl.textContent = "";
+          statusEl.classList.remove("text-industrial", "text-good");
+        }
+
+        const formData = new FormData(form);
+        const payload = {
+          name: String(formData.get("name") ?? ""),
+          email: String(formData.get("email") ?? ""),
+          subject: String(formData.get("subject") ?? ""),
+          message: String(formData.get("message") ?? ""),
+          website: String(formData.get("website") ?? ""),
+          startedAt: Number(formData.get("startedAt") ?? 0),
+        };
+
+        if (payload.website) return;
+
+        const errors = validate(payload);
+        const keys = Object.keys(errors);
+        if (keys.length > 0) {
+          keys.forEach((key) => setError(key, errors[key]));
+          if (statusEl) {
+            statusEl.textContent = "Please fix the highlighted fields.";
+            statusEl.classList.add("text-industrial");
+          }
+          return;
+        }
+
+        const body = [payload.message.trim(), "", `— ${payload.name.trim()}`, payload.email.trim()].join(
+          "\n",
+        );
+        const mailto = `mailto:help@goodfatbadfat.com?subject=${encodeURIComponent(payload.subject.trim())}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailto;
+        form.reset();
+        if (startedAt instanceof HTMLInputElement) startedAt.value = String(Date.now());
+        if (statusEl) {
+          statusEl.textContent = "Opening your email app to send this to help@goodfatbadfat.com.";
+          statusEl.classList.add("text-muted");
+        }
+      });
+    </script>
+  </main>
+  <SiteFooter />
+</BaseLayout>

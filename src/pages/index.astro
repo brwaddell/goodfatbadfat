@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import Hero from "../components/Hero.astro";
+import AppleSection from "../components/AppleSection.astro";
+import GoodFatsSection from "../components/GoodFatsSection.astro";
+import OmegaChartSection from "../components/OmegaChartSection.astro";
+import HowSection from "../components/HowSection.astro";
+import ScoreSection from "../components/ScoreSection.astro";
+import AskSection from "../components/AskSection.astro";
+import BlogSection from "../components/BlogSection.astro";
+import FinalCta from "../components/FinalCta.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+---
+
+<BaseLayout>
+  <SiteHeader />
+  <main id="main-content">
+    <Hero />
+    <AppleSection />
+    <GoodFatsSection />
+    <OmegaChartSection />
+    <HowSection />
+    <ScoreSection />
+    <AskSection />
+    <BlogSection />
+    <FinalCta />
+  </main>
+  <SiteFooter />
+</BaseLayout>

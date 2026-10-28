@@ -1,0 +1,60 @@
+---
+import { appStoreUrl, playStoreUrl } from "../lib/site";
+
+const hasIos = Boolean(appStoreUrl);
+const hasAndroid = Boolean(playStoreUrl);
+const hasStoreLinks = hasIos || hasAndroid;
+const primaryHref = appStoreUrl || playStoreUrl || "/support#contact";
+const primaryLabel = hasStoreLinks ? "Get the app" : "Get notified";
+---
+
+<section id="download" class="relative border-t border-border/60 py-24 sm:py-28">
+  <div class="mx-auto max-w-3xl px-5 text-center sm:px-8">
+    <img
+      src="/images/splash-128.webp"
+      alt="GoodFat droplet mascot"
+      width="72"
+      height="83"
+      class="float-soft mx-auto h-16 w-auto"
+      decoding="async"
+    />
+    <h2
+      class="mt-6 font-display text-3xl font-800 tracking-[-0.03em] text-text text-balance sm:text-5xl"
+    >
+      Start choosing fats that help you feel good.
+    </h2>
+    <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-muted">
+      {
+        hasStoreLinks
+          ? "More energy. Calmer skin. A steadier mood. GoodFat uses Apple Intelligence on your iPhone, so the photo stays with you."
+          : "GoodFat is coming to the App Store. Leave your email with support and we will tell you when it is ready."
+      }
+    </p>
+    <p class="mx-auto mt-4 max-w-lg text-sm leading-relaxed text-muted">
+      iPhone 15 Pro, iPhone 15 Pro Max, iPhone 16 or later, or iPhone Air. Apple Intelligence and iOS
+      26 required.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <a
+        href={primaryHref}
+        target={hasStoreLinks ? "_blank" : undefined}
+        rel={hasStoreLinks ? "noopener noreferrer" : undefined}
+        class="inline-flex items-center justify-center rounded-pill bg-yellow px-6 py-3.5 font-display text-base font-700 text-ink transition-transform duration-200 hover:-translate-y-0.5"
+      >
+        {hasIos && !hasAndroid ? "Download on the App Store" : primaryLabel}
+      </a>
+      {
+        hasIos && hasAndroid && (
+          <a
+            href={playStoreUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-pill border border-border bg-card/40 px-6 py-3.5 font-display text-base font-700 text-text transition-colors duration-200 hover:border-yellow/50"
+          >
+            Get on Android
+          </a>
+        )
+      }
+    </div>
+  </div>
+</section>

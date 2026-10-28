@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="Blog — GoodFat"
+  description="Plain-language reviews of research on inflammation, good fats, mood, skin, and feeling better."
+>
+  <SiteHeader />
+  <main id="main-content" class="mx-auto max-w-3xl px-5 pb-24 pt-28 sm:px-8">
+    <p class="label-micro text-yellow">Blog</p>
+    <h1 class="mt-3 font-display text-4xl font-800 tracking-tight text-text sm:text-5xl">
+      Research, made easy to read.
+    </h1>
+    <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted">
+      We review studies on inflammation and good fats — then explain what they may mean for how you
+      feel, look, and age.
+    </p>
+
+    <ul class="mt-12 space-y-8">
+      {
+        posts.map((post) => (
+          <li class="border-t border-border pt-8">
+            <p class="label-micro text-muted">
+              {post.data.pubDate.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+            </p>
+            <h2 class="mt-3 font-display text-2xl font-800 tracking-tight text-text">
+              <a href={`/blog/${post.id}`} class="transition-colors hover:text-yellow">
+                {post.data.title}
+              </a>
+            </h2>
+            <p class="mt-2 text-[15px] leading-relaxed text-muted">{post.data.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+  <SiteFooter />
+</BaseLayout>

@@ -1,0 +1,146 @@
+---
+import { appStoreUrl } from "../lib/site";
+---
+
+<header class="pointer-events-none fixed inset-x-0 top-0 z-50">
+  <div
+    class="pointer-events-auto mx-auto flex w-full max-w-6xl items-center justify-between gap-3 px-5 py-4 sm:gap-5 sm:px-8 sm:py-5"
+  >
+    <a href="/" class="inline-flex items-center gap-2.5" aria-label="GoodFat home">
+      <img
+        src="/images/splash-64.webp"
+        alt=""
+        width="40"
+        height="46"
+        class="h-9 w-auto sm:h-10"
+        decoding="async"
+      />
+      <span class="font-display text-lg font-800 tracking-tight text-text sm:text-xl">GoodFat</span>
+    </a>
+
+    <div class="relative z-50 flex items-center gap-3 sm:gap-5">
+      <nav class="flex items-center gap-4 sm:gap-6" aria-label="Primary">
+        <a
+          href="/#apple"
+          class="label-micro hidden text-muted transition-colors hover:text-text sm:inline"
+        >
+          Apple Intelligence
+        </a>
+        <a
+          href="/#good-fats"
+          class="label-micro hidden text-muted transition-colors hover:text-text lg:inline"
+        >
+          Good fats
+        </a>
+        <a
+          href="/#omega"
+          class="label-micro hidden text-muted transition-colors hover:text-text sm:inline"
+        >
+          Omega ratio
+        </a>
+        <a
+          href="/#blog"
+          class="label-micro hidden text-muted transition-colors hover:text-text sm:inline"
+        >
+          Blog
+        </a>
+        <a
+          href="/#how"
+          class="label-micro hidden text-muted transition-colors hover:text-text sm:inline"
+        >
+          How it works
+        </a>
+        <a
+          href="/support"
+          class="label-micro hidden text-muted transition-colors hover:text-text md:inline"
+        >
+          Support
+        </a>
+      </nav>
+      <button
+        type="button"
+        id="theme-toggle"
+        class="relative z-50 inline-flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-pill border border-border bg-card text-text transition-colors hover:border-yellow/50"
+        aria-label="Toggle light and dark mode"
+        title="Toggle theme"
+      >
+        <svg
+          class="theme-icon-sun hidden h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <circle cx="12" cy="12" r="4"></circle>
+          <path
+            d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+          ></path>
+        </svg>
+        <svg
+          class="theme-icon-moon h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5Z"></path>
+        </svg>
+      </button>
+      <a
+        href={appStoreUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center rounded-pill bg-yellow px-4 py-2.5 font-display text-sm font-700 text-ink transition-transform duration-200 hover:-translate-y-0.5"
+      >
+        Get the app
+      </a>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  (() => {
+    function currentTheme() {
+      return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+    }
+
+    function syncToggle(theme) {
+      document.querySelectorAll(".theme-icon-sun").forEach((el) => {
+        el.classList.toggle("hidden", theme !== "light");
+      });
+      document.querySelectorAll(".theme-icon-moon").forEach((el) => {
+        el.classList.toggle("hidden", theme !== "dark");
+      });
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", theme === "light" ? "#FFFFFF" : "#07101F");
+    }
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      try {
+        localStorage.setItem("goodfat-theme", theme);
+      } catch {
+        // ignore
+      }
+      syncToggle(theme);
+      window.dispatchEvent(new CustomEvent("goodfat-theme", { detail: { theme } }));
+    }
+
+    syncToggle(currentTheme());
+
+    document.addEventListener(
+      "click",
+      (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) return;
+        const btn = target.closest("#theme-toggle");
+        if (!btn) return;
+        event.preventDefault();
+        setTheme(currentTheme() === "dark" ? "light" : "dark");
+      },
+      true,
+    );
+  })();
+</script>

@@ -1,0 +1,61 @@
+---
+import { gaMeasurementId, plausibleDomain } from "../lib/site";
+---
+
+<script is:inline define:vars={{ gaMeasurementId, plausibleDomain }}>
+  (() => {
+    let loaded = false;
+
+    function inject(src, attrs) {
+      if (document.querySelector(`script[data-goodfat-analytics="${src}"]`)) return;
+      const el = document.createElement("script");
+      el.src = src;
+      el.async = true;
+      el.dataset.goodfatAnalytics = src;
+      Object.entries(attrs || {}).forEach(([key, value]) => {
+        el.setAttribute(key, value);
+      });
+      document.head.appendChild(el);
+    }
+
+    function loadAnalytics() {
+      if (loaded) return;
+      if (gaMeasurementId) {
+        inject(`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag =
+          window.gtag ||
+          function gtag() {
+            window.dataLayer.push(arguments);
+          };
+        window.gtag("js", new Date());
+        window.gtag("config", gaMeasurementId, { anonymize_ip: true });
+      }
+      if (plausibleDomain) {
+        inject("https://plausible.io/js/script.js", {
+          defer: "",
+          "data-domain": plausibleDomain,
+        });
+      }
+      loaded = Boolean(gaMeasurementId || plausibleDomain);
+    }
+
+    function hasAnalyticsConsent() {
+      try {
+        const raw = localStorage.getItem("goodfat-cookie-consent");
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        if (parsed === "accepted") return true;
+        return Boolean(parsed && parsed.analytics);
+      } catch {
+        return false;
+      }
+    }
+
+    if (hasAnalyticsConsent()) loadAnalytics();
+    window.addEventListener("goodfat-consent", (event) => {
+      const detail = event.detail;
+      if (detail && detail.analytics) loadAnalytics();
+    });
+  })();
+</script>

@@ -1,0 +1,196 @@
+---
+/**
+ * Dual omega trend chart — mirrors HomeMetricsDock sparklines:
+ * ω-6 (theme text stroke) + ω-3 (#4A90E2), smooth cubic paths.
+ */
+const w = 720;
+const h = 220;
+const padX = 12;
+const padY = 18;
+
+/** Demo week of dual intake (g) — ω-6 trending down, ω-3 rising → healthier ratio */
+const omega6 = [42, 38, 45, 36, 32, 28, 24];
+const omega3 = [8, 10, 9, 12, 14, 16, 18];
+
+function smoothPath(values: number[], max: number): string {
+  const n = values.length;
+  if (n < 2) return "";
+  const pts = values.map((v, i) => {
+    const x = padX + (i / (n - 1)) * (w - padX * 2);
+    const y = padY + (1 - v / max) * (h - padY * 2);
+    return { x, y };
+  });
+  let d = `M ${pts[0].x} ${pts[0].y}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[i];
+    const p1 = pts[i + 1];
+    const c1x = p0.x + (p1.x - p0.x) / 3;
+    const c2x = p0.x + (2 * (p1.x - p0.x)) / 3;
+    d += ` C ${c1x} ${p0.y}, ${c2x} ${p1.y}, ${p1.x} ${p1.y}`;
+  }
+  return d;
+}
+
+const maxY = Math.max(...omega6, ...omega3) * 1.15;
+const path6 = smoothPath(omega6, maxY);
+const path3 = smoothPath(omega3, maxY);
+const last6 = omega6[omega6.length - 1];
+const last3 = omega3[omega3.length - 1];
+const ratio = (last6 / last3).toFixed(1);
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const n = omega6.length;
+const endX = padX + ((n - 1) / (n - 1)) * (w - padX * 2);
+const endY6 = padY + (1 - last6 / maxY) * (h - padY * 2);
+const endY3 = padY + (1 - last3 / maxY) * (h - padY * 2);
+---
+
+<section id="omega" class="relative border-t border-border/60 py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="label-micro text-yellow">Omega balance</p>
+    <h2
+      class="mt-4 max-w-[20ch] font-display text-3xl font-800 tracking-[-0.03em] text-text text-balance sm:text-5xl"
+    >
+      Watch your omega balance move in the right direction.
+    </h2>
+    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
+      Omega‑6 and omega‑3 both matter. When omega‑3 rises and heavy omega‑6 oils ease off, many people
+      feel less puffy, less foggy, and more steady. This chart is the same idea as the app home screen.
+    </p>
+
+    <div
+      class="mt-12 overflow-hidden rounded-panel border border-border bg-card p-5 sm:p-8"
+      style="box-shadow: 0 18px 48px color-mix(in srgb, var(--color-ink) 12%, transparent);"
+    >
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="label-micro text-muted">This week</p>
+          <p
+            class="mt-2 font-display text-[clamp(2rem,5vw,2.75rem)] font-800 tracking-[-0.03em] text-text"
+          >
+            {ratio}<span class="text-muted">:1</span>
+          </p>
+          <p class="mt-1 text-sm text-muted">ω-6 : ω-3 · trending toward balance</p>
+        </div>
+        <div class="flex flex-wrap gap-5 text-sm">
+          <div class="flex items-center gap-2">
+            <span class="h-0.5 w-6 rounded-full bg-text" aria-hidden="true"></span>
+            <span class="text-muted">ω-6 · {last6}g</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="h-0.5 w-6 rounded-full bg-blue" aria-hidden="true"></span>
+            <span class="text-muted">ω-3 · {last3}g</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 omega-chart">
+        <svg
+          viewBox={`0 0 ${w} ${h}`}
+          class="h-auto w-full"
+          role="img"
+          aria-label={`Omega ratio chart ending at ${ratio} to 1`}
+        >
+          <defs>
+            <linearGradient id="omega3Fill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#4A90E2" stop-opacity="0.22"></stop>
+              <stop offset="100%" stop-color="#4A90E2" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+
+          {
+            [0.25, 0.5, 0.75].map((t) => (
+              <line
+                x1={padX}
+                y1={padY + t * (h - padY * 2)}
+                x2={w - padX}
+                y2={padY + t * (h - padY * 2)}
+                stroke="var(--color-border)"
+                stroke-width="1"
+              />
+            ))
+          }
+
+          <path
+            d={`${path3} L ${w - padX} ${h - padY} L ${padX} ${h - padY} Z`}
+            fill="url(#omega3Fill)"
+            class="omega-area"
+          ></path>
+
+          <path
+            d={path6}
+            fill="none"
+            stroke="var(--color-text)"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="omega-line omega-line-6"
+          ></path>
+
+          <path
+            d={path3}
+            fill="none"
+            stroke="#4A90E2"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="omega-line omega-line-3"
+          ></path>
+
+          <circle cx={endX} cy={endY6} r="5" fill="var(--color-text)" class="omega-dot"></circle>
+          <circle cx={endX} cy={endY3} r="5" fill="#4A90E2" class="omega-dot"></circle>
+        </svg>
+
+        <div
+          class="mt-2 flex justify-between px-1 text-[10px] font-700 uppercase tracking-wider text-muted"
+        >
+          {days.map((d) => <span>{d}</span>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .omega-line {
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: omega-draw 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .omega-line-3 {
+    animation-delay: 0.18s;
+  }
+
+  .omega-area {
+    opacity: 0;
+    animation: omega-fade 0.8s ease 0.5s forwards;
+  }
+
+  .omega-dot {
+    opacity: 0;
+    animation: omega-fade 0.4s ease 1.2s forwards;
+  }
+
+  @keyframes omega-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes omega-fade {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .omega-line,
+    .omega-area,
+    .omega-dot {
+      animation: none;
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+      opacity: 1;
+    }
+  }
+</style>

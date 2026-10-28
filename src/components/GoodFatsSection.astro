@@ -1,0 +1,160 @@
+---
+const pillars = [
+  {
+    kicker: "01",
+    title: "You feel less stiff",
+    body: "Good fats help your cells stay soft and flexible. That can mean easier joints, better blood flow, and a body that does not feel so “stuck.”",
+    visual: "membrane",
+  },
+  {
+    kicker: "02",
+    title: "Your mood can settle",
+    body: "When inflammation stays high, many people feel foggy or short-tempered. Calmer fat balance supports a steadier mood and clearer thinking.",
+    visual: "signal",
+  },
+  {
+    kicker: "03",
+    title: "Skin and energy can improve",
+    body: "Healthy fats help your skin barrier and your long-term heart health. Small daily choices add up to how you look, move, and age.",
+    visual: "trend",
+  },
+] as const;
+---
+
+<section id="good-fats" class="relative border-t border-border/60 py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="label-micro text-yellow">Why fats matter</p>
+    <h2
+      class="mt-4 max-w-[18ch] font-display text-3xl font-800 tracking-[-0.03em] text-text text-balance sm:text-5xl"
+    >
+      Good fats help you feel better — not just “eat clean.”
+    </h2>
+    <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
+      Your body builds itself from the fats you eat. Choose fish, olive oil, nuts, and whole foods more
+      often. Cut back on fried seed oils when you can. Many people notice more energy, calmer skin, and
+      an easier mood over time.
+    </p>
+
+    <div class="mt-14 grid gap-10 sm:grid-cols-3 sm:gap-8">
+      {
+        pillars.map((item) => (
+          <div class="relative">
+            <div
+              class="mb-5 aspect-[5/3] overflow-hidden rounded-panel border border-border bg-card"
+              aria-hidden="true"
+            >
+              {item.visual === "membrane" && (
+                <svg class="h-full w-full" viewBox="0 0 280 168" fill="none">
+                  <rect width="280" height="168" fill="var(--color-navy)" opacity="0.28" />
+                  <ellipse
+                    cx="140"
+                    cy="84"
+                    rx="78"
+                    ry="52"
+                    fill="var(--color-blue)"
+                    opacity="0.18"
+                    stroke="var(--color-blue)"
+                    stroke-width="2"
+                  />
+                  <ellipse
+                    cx="140"
+                    cy="84"
+                    rx="52"
+                    ry="34"
+                    fill="var(--color-good)"
+                    opacity="0.2"
+                    stroke="var(--color-good)"
+                    stroke-width="1.5"
+                  />
+                  <circle cx="108" cy="70" r="6" fill="var(--color-yellow)" />
+                  <circle cx="156" cy="96" r="5" fill="var(--color-yellow)" />
+                  <circle cx="168" cy="68" r="4" fill="var(--color-blue)" />
+                  <circle cx="122" cy="102" r="4.5" fill="var(--color-blue)" />
+                  <path
+                    d="M70 84c20-18 40-18 60 0s40 18 60 0"
+                    stroke="var(--color-text)"
+                    stroke-width="1.5"
+                    opacity="0.35"
+                    fill="none"
+                  />
+                  <path
+                    d="M70 96c20 14 40 14 60 0s40-14 60 0"
+                    stroke="var(--color-text)"
+                    stroke-width="1.5"
+                    opacity="0.25"
+                    fill="none"
+                  />
+                </svg>
+              )}
+              {item.visual === "signal" && (
+                <svg class="h-full w-full" viewBox="0 0 280 168" fill="none">
+                  <rect width="280" height="168" fill="var(--color-navy)" opacity="0.28" />
+                  <path
+                    d="M40 120c30-40 50-20 70-48 18-24 28-8 46-28 16-18 28-4 44-20 12-12 22-4 40 8"
+                    stroke="var(--color-industrial)"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    opacity="0.35"
+                    fill="none"
+                    stroke-dasharray="4 6"
+                  />
+                  <path
+                    d="M40 132c36-18 58-8 82-22 28-16 40-6 62-14 24-8 36 2 56 10"
+                    stroke="var(--color-good)"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    fill="none"
+                  />
+                  <circle cx="220" cy="106" r="8" fill="var(--color-good)" />
+                  <text
+                    x="48"
+                    y="48"
+                    fill="var(--color-muted)"
+                    font-size="11"
+                    font-weight="700"
+                    letter-spacing="0.1em"
+                  >
+                    CALMER SIGNAL
+                  </text>
+                </svg>
+              )}
+              {item.visual === "trend" && (
+                <svg class="h-full w-full" viewBox="0 0 280 168" fill="none">
+                  <rect width="280" height="168" fill="var(--color-navy)" opacity="0.28" />
+                  <text
+                    x="28"
+                    y="40"
+                    fill="var(--color-muted)"
+                    font-size="10"
+                    font-weight="700"
+                    letter-spacing="0.12em"
+                  >
+                    TODAY · WEEKLY · MONTHLY
+                  </text>
+                  <path
+                    d="M28 120 L70 98 L112 108 L154 72 L196 64 L238 42"
+                    stroke="var(--color-good)"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    fill="none"
+                  />
+                  <circle cx="238" cy="42" r="6" fill="var(--color-good)" />
+                  <text x="28" y="148" fill="var(--color-text)" font-size="22" font-weight="800">
+                    28
+                  </text>
+                  <text x="68" y="148" fill="var(--color-muted)" font-size="12">
+                    feeling better over time
+                  </text>
+                </svg>
+              )}
+            </div>
+            <p class="label-micro text-yellow">{item.kicker}</p>
+            <h3 class="mt-3 font-display text-xl font-800 tracking-tight text-text">{item.title}</h3>
+            <p class="mt-3 text-[15px] leading-relaxed text-muted">{item.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

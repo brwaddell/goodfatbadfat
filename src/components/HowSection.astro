@@ -1,0 +1,73 @@
+---
+const actions = [
+  {
+    step: "01",
+    title: "Snap your meal",
+    body: "Take a photo or scan a barcode. Apple Intelligence names the food on your iPhone, then you see how it may affect how you feel.",
+    detail: "On device · Photo · Barcode",
+    image: "/images/screens/scan.webp",
+    fallback: "/images/screens/scan.png",
+    alt: "Scanning a salmon bowl in GoodFat",
+  },
+  {
+    step: "02",
+    title: "Make a small swap",
+    body: "Confirm what you ate. If a food is rough on your body, ask for a better option you will still enjoy.",
+    detail: "Confirm · Adjust grams",
+    image: "/images/screens/fats.webp",
+    fallback: "/images/screens/fats.png",
+    alt: "Salmon bowl nutrition and fats in GoodFat",
+  },
+  {
+    step: "03",
+    title: "Feel the change",
+    body: "Watch your weekly and monthly scores settle. Many people notice more energy, calmer skin, and a steadier mood.",
+    detail: "Today · Weekly · Monthly",
+    image: "/images/screens/score.webp",
+    fallback: "/images/screens/score.png",
+    alt: "Inflammatory score on the GoodFat home screen",
+  },
+] as const;
+---
+
+<section id="how" class="relative border-t border-border/60 py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="label-micro text-yellow">How it works</p>
+    <h2
+      class="mt-4 max-w-[16ch] font-display text-3xl font-800 tracking-[-0.03em] text-text text-balance sm:text-5xl"
+    >
+      Three simple steps toward feeling better.
+    </h2>
+    <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted">
+      You do not need a perfect diet. You need a clear picture of the fats you eat — and kinder choices
+      most days.
+    </p>
+
+    <ol class="mt-14 grid gap-12 sm:grid-cols-3 sm:gap-8">
+      {
+        actions.map((item) => (
+          <li class="relative flex flex-col">
+            <div class="mb-6 flex justify-center">
+              <picture>
+                <source type="image/webp" srcset={item.image} />
+                <img
+                  src={item.fallback}
+                  alt={item.alt}
+                  width="720"
+                  height="1465"
+                  class="w-[min(100%,240px)] drop-shadow-[0_28px_48px_rgba(0,0,0,0.45)]"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <p class="label-micro text-yellow">{item.step}</p>
+            <h3 class="mt-3 font-display text-2xl font-800 tracking-tight text-text">{item.title}</h3>
+            <p class="mt-3 text-[15px] leading-relaxed text-muted">{item.body}</p>
+            <p class="mt-5 label-micro text-muted">{item.detail}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

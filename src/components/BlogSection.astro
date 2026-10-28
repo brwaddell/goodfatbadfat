@@ -1,0 +1,61 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+---
+
+<section id="blog" class="relative border-t border-border/60 py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="label-micro text-yellow">From the blog</p>
+        <h2
+          class="mt-4 max-w-[18ch] font-display text-3xl font-800 tracking-[-0.03em] text-text text-balance sm:text-5xl"
+        >
+          What the research says — in plain words.
+        </h2>
+        <p class="mt-5 max-w-xl text-lg leading-relaxed text-muted">
+          Short reads on inflammation, good fats, mood, skin, and living well. Each post points back
+          to real studies.
+        </p>
+      </div>
+      <a
+        href="/blog"
+        class="label-micro text-yellow transition-colors hover:text-text"
+      >
+        See all posts →
+      </a>
+    </div>
+
+    <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        posts.map((post) => (
+          <li>
+            <a
+              href={`/blog/${post.id}`}
+              class="group flex h-full flex-col border-t border-border pt-5 transition-colors"
+            >
+              <p class="label-micro text-muted">
+                {post.data.pubDate.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </p>
+              <h3 class="mt-3 font-display text-xl font-800 tracking-tight text-text transition-colors group-hover:text-yellow">
+                {post.data.title}
+              </h3>
+              <p class="mt-2 flex-1 text-[15px] leading-relaxed text-muted">
+                {post.data.description}
+              </p>
+              <span class="mt-4 label-micro text-yellow">Read →</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
